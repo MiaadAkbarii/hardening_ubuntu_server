@@ -10,7 +10,7 @@
       #  ]
 
 
-
+echo	"[+] ***************************************************    Avan  Hardening Server   Avan   **********************************************";
 
 
 usage() {
@@ -57,11 +57,12 @@ configureAutomaticUpgrade() {
 }
 zabbixagent() {
         echo "[+] Install agent and configuration zabbix agent";
+	mkdir -p /opt/zabbixagent
         wget https://repo.zabbix.com/zabbix/5.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_5.0-1+focal_all.deb
         dpkg -i zabbix-release_5.0-1+focal_all.deb
         apt update
         apt install zabbix-agent
-        sed -i 's/Server= 10.10.0.90/Hostname= mon.homapharmed.com/g /etc/zabbix/zabbix_agetnd.conf/';
+        sed -i 's/Server= IP_ADDR/Hostname= HOSTNAME/g /etc/zabbix/zabbix_agetnd.conf/';
         systemctl restart zabbix-agent;
         systemctl enable zabbix-agent;
         systemctl restart zabbix-agent;
