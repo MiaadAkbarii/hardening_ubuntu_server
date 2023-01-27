@@ -10,9 +10,6 @@
       #  ]
 
 
-echo	"[+] ***************************************************    Avan  Hardening Server   Avan   **********************************************";
-
-
 usage() {
 	echo "Usage: hardening.sh [-u <username>]";
 	exit 1;
@@ -57,11 +54,11 @@ configureAutomaticUpgrade() {
 }
 zabbixagent() {
         echo "[+] Install agent and configuration zabbix agent";
-	mkdir -p /opt/zabbixagent
-        wget https://repo.zabbix.com/zabbix/5.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_5.0-1+focal_all.deb
-        dpkg -i zabbix-release_5.0-1+focal_all.deb
-        apt update
-        apt install zabbix-agent
+	mkdir -p /opt/zabbixagent;
+        wget https://repo.zabbix.com/zabbix/5.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_5.0-1+focal_all.deb;
+        dpkg -i zabbix-release_5.0-1+focal_all.deb;
+        apt update;
+        apt install zabbix-agent;
         sed -i 's/Server= IP_ADDR/Hostname= HOSTNAME/g /etc/zabbix/zabbix_agetnd.conf/';
         systemctl restart zabbix-agent;
         systemctl enable zabbix-agent;
@@ -76,11 +73,11 @@ setUpFirewall() {
         ufw default deny incoming &> /dev/null;
         ufw default allow outgoing &> /dev/null;
         echo "[+] Firewall allow outgoing connection";
-        ufw allow 4563/tcp  &> /dev/null; 
+        ufw allow port/tcp  &> /dev/null; 
         ufw allow http &> /dev/null;
         ufw allow https &> /dev/null;
         ufw allow 10051/tcp &> /dev/null;
-        echo "[+] Firewall allow only incoming connection on port 4563 (SSH)";
+        echo "[+] Firewall allow only incoming connection on port port (SSH)";
         echo "[+] Firewall allow only incoming connection on port 80 (HTTP)";
         echo "[+] Firewall allow only incoming connection on port 443 (HTTPS)";
         echo "[+] Firewall allow only incoming connection on port 10051 (ZABBIX)";
@@ -104,7 +101,7 @@ configureOTP() {
         cp /etc/pam.d/sshd /etc/pam.d/sshd.bck;
         echo "auth required pam_google_authenticator.so" >> /etc/pam.d/sshd;
         cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bck;
-        sed -i 's/KbdInteractiveAuthentication no/KbdInteractiveAuthentication yes/Port 4563/PermitRootLogin no/g' /etc/ssh/sshd_config;
+        sed -i 's/KbdInteractiveAuthentication no/KbdInteractiveAuthentication yes/Port port/PermitRootLogin no/g' /etc/ssh/sshd_config;
         echo "AuthenticationMethods keyboard-interactive" >> /etc/ssh/sshd_config;
 }
 
