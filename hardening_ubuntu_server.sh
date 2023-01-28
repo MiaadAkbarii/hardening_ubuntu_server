@@ -93,19 +93,6 @@ configureNTP() {
         timedatectl set-ntp on;
 }
 
-
-configureOTP() {
-        echo "[+] Configuring Google OTP...";
-        checkPackage "libpam-google-authenticator";
-        checkPackage "openssh-server";
-        cp /etc/pam.d/sshd /etc/pam.d/sshd.bck;
-        echo "auth required pam_google_authenticator.so" >> /etc/pam.d/sshd;
-        cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bck;
-        sed -i 's/KbdInteractiveAuthentication no/KbdInteractiveAuthentication yes/Port port/PermitRootLogin no/g' /etc/ssh/sshd_config;
-        echo "AuthenticationMethods keyboard-interactive" >> /etc/ssh/sshd_config;
-}
-
-
 enforcePasswordPolicy() {
 	echo "[+] Configuring password policy...";
 	checkPackage "libpam-pwquality"
